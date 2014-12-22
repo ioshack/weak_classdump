@@ -642,17 +642,18 @@ function mweak_loadwdc_class(){
 	var bundle=[infoDictionary objectForKey:@"bundle"];
 	var outputdir=[infoDictionary objectForKey:@"outputdir"];
 
+ 	var allClasses=[ObjectiveC.classes allKeys];
 
-	for (d = 0; d<[ObjectiveC.classes allKeys].length; d++) {
-		name=[ObjectiveC.classes allKeys][d].toString();
-		if ([[NSBundle bundleForClass:objc_getClass(name.toString())] isEqual:bundle]){
-			try {
-				weak_classdump(objc_getClass(objc_getClass(name.toString())), false, outputdir);
-			} 
-			catch (e) {
-			}
-		}
-	}
+        for (d = 0; d<allClasses.length; d++) {
+                name=allClasses[d].toString();
+                if ([[NSBundle bundleForClass:objc_getClass(name.toString())] isEqual:bundle]){
+                        try {   
+                                weak_classdump(objc_getClass(objc_getClass(name.toString())), false, outputdir);
+                        }       
+                        catch (e) {
+                        }       
+                }       
+        }       
 	if (typeof(__AudioServicesPlaySystemSound)=="undefined"){
 	 	 dlopen("/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox",RTLD_LAZY);
 		__AudioServicesPlaySystemSound=new Functor(dlsym(-2,"AudioServicesPlaySystemSound"),"vi");
